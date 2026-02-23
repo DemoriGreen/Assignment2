@@ -52,13 +52,13 @@ def test_search_correctness():
 
 def benchmark_search(algorithm, data, targets, needs_sort=False):
     if needs_sort:
-        start_sort = time.time()
+        start_sort = time.perf_counter()
         data = sorted(data)
-        sort_time = time.time() - start_sort
+        sort_time = time.perf_counter() - start_sort
     else:
         sort_time = 0
 
-    start = time.time()
+    start = time.perf_counter()
 
     for target in targets:
         if algorithm == "linear":
@@ -68,7 +68,7 @@ def benchmark_search(algorithm, data, targets, needs_sort=False):
         elif algorithm == "binary_rec":
             binary_search_recursive(data, target, 0, len(data) - 1)
 
-    total_time = time.time() - start
+    total_time = time.perf_counter() - start
     return total_time + sort_time
 
 
@@ -109,24 +109,24 @@ def analyze_preprocessing():
 
     data = random.sample(range(1_000_000), 100_000)
 
-    start_sort = time.time()
+    start_sort = time.perf_counter()
     sorted_data = sorted(data)
-    sort_time = time.time() - start_sort
+    sort_time = time.perf_counter() - start_sort
 
     print("Sorting time:", round(sort_time, 5), "seconds")
 
     for searches in [1, 5, 10, 20, 50, 100]:
         targets = random.sample(data, searches)
 
-        start_linear = time.time()
+        start_linear = time.perf_counter()
         for t in targets:
             linear_search(data, t)
-        linear_time = time.time() - start_linear
+        linear_time = time.perf_counter() - start_linear
 
-        start_binary = time.time()
+        start_binary = time.perf_counter()
         for t in targets:
             binary_search_iterative(sorted_data, t)
-        binary_time = time.time() - start_binary
+        binary_time = time.perf_counter() - start_binary
 
         total_binary = sort_time + binary_time
 
@@ -139,7 +139,6 @@ if __name__ == "__main__":
     test_search_correctness()
     benchmark_all()
     analyze_preprocessing()
-
 git add .
 git commit -m "Completed recursive file system analysis"
 git push
